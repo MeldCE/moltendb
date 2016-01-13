@@ -1,0 +1,31 @@
+{
+  "name": "moltendb",
+  "version": "0.1.0",
+  "description": "A data-driven web app for creating fully customisable web sites",
+  "main": "server.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MeldCE/moltendb.git"
+  },
+  "keywords": [
+    "moltendb",
+    "database",
+    "db",
+    "react",
+    "reactjs",
+    "ui",
+    "cms"
+  ],
+  "author": "Meld Computer Engineering Opensource",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/MeldCE/moltendb/issues"
+  },
+  "homepage": "https://github.com/MeldCE/moltendb#readme",
+  "dependencies": {
+    "i18n-node": "^2.1.5"
+  }
+}
