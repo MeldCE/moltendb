@@ -1,25 +1,27 @@
 var assert = require('assert');
-var users = require('./users.js');
+
+var settings = require('../../settings.js');
 
 module.exports = {};
 
 /**
  * MoltenDB module for handling permissions.
  */
-function Permissions() {
+function Users() {
 }
 
-Permissions.prototype = {
+Users.prototype = {
   /**
    * Checks and returns whether a user has a specific permission.
    *
-   * @param {String} permission String identifier of the permission to check
-   *        for.
+   * @param {String|[String]} permission String identifier of the permission to
+   *        check for.
    * @param {users.User} user The user to check if they have the permission.
+   * @param {Object} data Additional data required to check permission
    *
    * @returns {Boolean} Whether the given user has the given permission
    */
-  can: function(permission, user) {
+  can: function(permission, user, data) {
     assert(typeof permission === 'string', 'permission identifier must be a '
         + 'string.');
   },
