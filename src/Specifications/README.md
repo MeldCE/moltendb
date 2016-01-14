@@ -23,6 +23,7 @@ data.
 	new records. Will need a temporary id or have a reference to the object that
 	can then be used to get the id once it has been commited - would use an array
 	to store the new objects until they can be saved to the database.
+
 ### Views
 Views that need to be included
 - "Table" or data format - list, vertical/horizontal table
@@ -31,9 +32,11 @@ Views that need to be included
 - HTML
 	- Must have the ability to be able to insert sub-views into arbritary
 	  locations
+
 ### Database
 - Ability to ensure a record is commited (in case of Mongo, written to a
 	majority)
+
 ### Tables
 - Must be able to store hierarchical documents
 - Must be able to either use a random id, a one-up id, or specify a custom id
@@ -43,6 +46,7 @@ Views that need to be included
 	_)
 - Must be able to set write concern for each table (not concerned, check every
 	x, check every)
+
 ### Fields
 - Text
 	- Normal / long (textarea) / HTML
@@ -65,6 +69,7 @@ Views that need to be included
 	- Single or multiple point(s)/line(s)/area(s) on a map
 	- Be able to search for a specific place (eg address)
 	- Be able to draw on a map
+
 ###= Field Options
 - Must be able to declare a field to be dependant on another field (via a
 	certain test)
@@ -75,6 +80,7 @@ Views that need to be included
 	the field cannot be blank and therefore must be filled in on creation.
 - Must be able to validate the field value, both on the server side and on the
 	client side
+
 ### Queries
 * Could be considered a special view? - option in view, would need to be able
   to specify an action and/or output for generated data. Might also need a
@@ -83,10 +89,12 @@ Views that need to be included
   to run again.
 - Have jobs and job statues for doing reports, so can do other stuff while
 	waiting for a job to complete
+
 ### Users and Security
 - Store the users preferences within their account so they can be accessed from
 	any computer (or just on a single browser) (once have a users collection)
 - Ability to track the user globally or on specific views etc
+
 ### Other Notes
 - Use secondary for creating reports if they need to be generated and stored
 
