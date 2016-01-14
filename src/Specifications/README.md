@@ -70,7 +70,7 @@ Views that need to be included
 	- Be able to search for a specific place (eg address)
 	- Be able to draw on a map
 
-###= Field Options
+#### Field Options
 - Must be able to declare a field to be dependant on another field (via a
 	certain test)
 - Must be able to specify if a field is required
