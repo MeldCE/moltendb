@@ -1,6 +1,6 @@
-# Requirements Specification
-## Molten DB
-Produced By: Meld Computer Engineering
+# Molten DB
+## Requirements Specification
+Produced By: [MeldCE Opensource](http://meldce.com/open)
 
 # Introduction
 ## Project Overview
