@@ -41,6 +41,13 @@
 - Need to be able to put actions on specific fields, on the whole row or on
   actions / buttons
 
+# Storage Mechanisms
+- Be able to set different storage mechanisms for each element down to each 
+  for (could it go lower).
+- Have ability to have multiple storage mechanisms
+  - First could be used for retrieval
+- Could have an email and other messaging storage mechanisms
+
 # Offline
 - Could send view and then request for data - will add an additional return
   trip to the server - could be set as an option (all data, partial data,

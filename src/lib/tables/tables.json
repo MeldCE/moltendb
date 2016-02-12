@@ -1,0 +1,47 @@
+{
+  "multilingual": true,
+  "id": "tables"
+  "schema": {
+    "id": {
+      "type": "string",
+      "oneOff": true,
+      "default":
+      "required" true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "textType": "long"
+    },
+    "schema": {
+      "type": "array",
+      items: {
+        "type": "field"
+      }
+    }
+  },
+  "lang": {
+    "en": {
+      "lable": "Tables",
+      "description": "Table storing table definitions",
+      "schema": {
+        "id": {
+          "label": "Table ID",
+          "description": "The string used to identify the table"
+        }
+        "label": {
+          "label": "Table Title"
+          "description": "The title of the table"
+        },
+        "description": {
+          "label": "Description"
+          "description": "Description of what the table contains"
+        },
+        "schema": {
+          "label": "System Tabl"
+    }
+  }
+}
