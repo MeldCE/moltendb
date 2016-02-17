@@ -2,7 +2,7 @@
   "name": "moltendb",
   "version": "0.1.0",
   "description": "A data-driven web app for creating fully customisable web sites",
-  "main": "server.js",
+  "main": "lib/moltendb.js",
   "scripts": {
     "test": "gulp test"
   },
@@ -26,7 +26,9 @@
   },
   "homepage": "https://github.com/MeldCE/moltendb#readme",
   "dependencies": {
-    "i18n-node": "^2.1.5"
+    "i18n-node": "^2.1.5",
+    "promise": "^7.1.1",
+    "requirejs": "^2.1.22"
   },
   "devDependencies": {
     "concat": "^1.0.0",
@@ -50,6 +52,5 @@
     "jasmine2-reporter": "^0.1.1",
     "rename": "^1.0.3"
   },
-  "optionalDependencies": {
-  }
+  "optionalDependencies": {}
 }

@@ -19,7 +19,7 @@ var rename = require('gulp-rename');
 var include = require('gulp-include');
 var coolReporter = require('jasmine2-reporter').Jasmine2Reporter;
 var complexity = require('gulp-complexity');
-
+var toc = require('gulp-doctoc');
 
 var paths = {
 	dist: './',
@@ -27,6 +27,8 @@ var paths = {
 	reports: 'reports/',
 	docs: 'docs/',
 	src: 'src/lib/**/*.js',
+  docsSrc: 'build/docsSrc',
+  exampleSrc: 'src/example.js',
 	testDir: 'src/spec',
 	testSrc: 'src/*.spec.js',
 	srcTests: 'src/spec/**/*.spec.js',
@@ -92,6 +94,23 @@ gulp.task('compile:tests', function() {
 			.pipe(gulp.dest(paths.testDir));
 });
 
+gulp.task('compile:example', function() {
+	return gulp.src(paths.exampleSrc)
+			.pipe(include())
+			.pipe(eslint({
+				useEslintrc: true,
+				env: {
+					node: true,
+					es6: true,
+					jasmine: true
+				}
+			}))
+			.pipe(eslint.format())
+			.pipe(eslint.failAfterError())
+			.pipe(gulp.dest(paths.dist));
+});
+
+
 gulp.task('pre-test', ['lint', 'lint:test'], function() {
 	return gulp.src(paths.src)
     // Covering files
@@ -129,16 +148,68 @@ gulp.task('complexity', ['lint', 'lint:test'], function() {
 			.pipe(complexity());
 });
 
-gulp.task('docs', ['htmldocs', 'mddocs']);
+gulp.task('compile:docs', ['lint'], function() {
+  var skemer = require('./src/lib/skemer.js');
+  var schemas = require('./src/lib/schema.js');
 
-gulp.task('htmldocs', ['lint'], function() {
-	return gulp.src(paths.src)
+  var toCompile = {
+    buildJsDocOptions: {
+      schema: schemas.buildDocOptions,
+      options: {
+        preLine: '   * ',
+        name: 'options',
+        wrap: 80,
+        type: 'param'
+      }
+    },
+    schema: {
+      schema: schemas.schema,
+      options: {
+        preLine: '   * ',
+        type: 'param', // @TODO XXX
+        wrap: 80
+      }
+    },
+    options: {
+      schema: schemas.options,
+      options: {
+        preLine: '   * ',
+        type: 'param', // @TODO XXX
+        wrap: 80
+      }
+    }
+  };
+
+  var builtDocs = {};
+  var d;
+
+  for (d in toCompile) {
+    //console.log('doing', d, toCompile[d].schema);
+    builtDocs[d] = skemer.buildJsDocs(toCompile[d].schema,
+        toCompile[d].options);
+  }
+
+  return gulp.src(paths.src)
+			.pipe(replace(/%%([a-zA-Z0-9-_.]+)%%/g, function(match, param) {
+				if (builtDocs[param]) {
+					return builtDocs[param];
+				} else {
+					return match;
+				}
+			}))
+      .pipe(gulp.dest(paths.docsSrc));
+});
+
+gulp.task('docs', ['compile:docs', 'htmldocs', 'mddocs']);
+
+gulp.task('htmldocs', ['lint', 'compile:docs'], function() {
+	return gulp.src(path.join(paths.docsSrc, '**/*.js'))
 			.pipe(documentation({ format: 'html' }))
 			.pipe(gulp.dest(paths.docs));
 });
 
-gulp.task('mddocs', ['lint'], function() {
-	return gulp.src(paths.src)
+gulp.task('mddocs', ['lint', 'compile:docs'], function() {
+	return gulp.src(path.join(paths.docsSrc, '**/*.js'))
 			.pipe(foreach(function(stream, file) {
 				return stream
 						.pipe(documentation({ format: 'md', shallow: true }))
@@ -171,6 +242,7 @@ gulp.task('readme', ['mddocs'], function() {
 				}
 			}))
 			.pipe(include())
+      .pipe(toc())
 			.pipe(gulp.dest('./'));
 });
 
@@ -204,10 +276,12 @@ gulp.task('watch', function() {
 	gulp.watch('package.json', ['check:deps']);
 });
 
-defaultTasks = ['check:deps', 'jasmine', /*'complexity',*/ 'docs', 'readme'];
+defaultTasks = ['check:deps', 'compile:example', 'jasmine', /*'complexity',*/ 'docs', 'readme'];
 
 gulp.task('one', defaultTasks);
 
 gulp.task('default', defaultTasks.concat(['watch']));
 
-gulp.task('production', defaultTasks.concat(['copy', 'jasmine:production', 'coveralls']));
+gulp.task('production', defaultTasks.concat(['copy', 'jasmine:production']));
+
+gulp.task('coveralls', defaultTasks.concat(['copy', 'jasmine:production', 'coveralls']));

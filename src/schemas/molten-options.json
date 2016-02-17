@@ -1,0 +1,23 @@
+{
+  "type": {
+    "configFile": {
+      "doc": "Path to config file",
+      "type": "string",
+      "default": "settings.json"
+    },
+    "debug": {
+      "doc": "Set to turn on debugging of all or particular features of Molten",
+      "types": {
+        "bool": {
+          "doc": "If true, will turn on all debugging",
+          "type": "boolean"
+        },
+        "object": {
+          "doc": "Turn on debugging on individual components",
+          "type": {
+          }
+        }
+      }
+    }
+  }
+}
