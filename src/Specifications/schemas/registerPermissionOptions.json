@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "multiple": true,
+  "object": true,
+  "type": {
+    "label": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

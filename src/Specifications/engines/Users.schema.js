@@ -7,11 +7,11 @@ modules.exports = {
       required: true
     },
     
-     description: {
-       doc: 'Description of permission engine',
-       type: 'string',
-       required: true
-     }
+    description: {
+      doc: 'Description of permission engine',
+      type: 'string',
+      required: true
+    },
 
     can: {
       doc: {

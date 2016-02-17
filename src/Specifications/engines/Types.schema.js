@@ -1,4 +1,3 @@
-
 module.exports = {
   type: {
     id: {
@@ -37,7 +36,7 @@ module.exports = {
           type: 'Boolean',
           description: 'Whether or not the value is valid'
         }
-      }
+      },
       type: 'function',
       required: true
     },
@@ -50,7 +49,7 @@ module.exports = {
           type: 'Boolean',
           description: 'Whether or not the value is valid'
         }
-      }
+      },
       type: 'function',
       required: true
     },
@@ -63,7 +62,7 @@ module.exports = {
           type: 'Boolean',
           description: 'Whether or not the value is valid'
         }
-      }
+      },
       type: 'function',
       required: true
     },
@@ -76,7 +75,7 @@ module.exports = {
           type: 'Boolean',
           description: 'Whether or not the value is valid'
         }
-      }
+      },
       type: 'function',
       required: true
     }

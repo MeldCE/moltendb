@@ -4,6 +4,8 @@ var settings = require('../../settings.js');
 
 module.exports = {};
 
+var 
+
 /**
  * MoltenDB module for handling permissions.
  */
@@ -30,7 +32,7 @@ Users.prototype = {
    * Registers a permission. Registration of permissions is required so that
    * they can be assigned to users/groups in the permissions manager.
    *
-   * @param {String|[String]} permissions Permissions to register
+   * @param {Object} permissions Permissions to register
    *
    * @returns {undefined}
    */

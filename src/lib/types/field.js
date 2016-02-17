@@ -16,10 +16,13 @@ that will detail what is actually going to be stored in the database
       oneOff: true
     },
     system: {
-      type: 'boolean'
-    },
+      type: 'boolean',
+      system: true
+   },
     type: {
       type: 'list',
+      values: { '@proc': '/molten/fieldTypes' }
+      require: true
     },
     options: {}
   lang: {
@@ -36,6 +39,10 @@ that will detail what is actually going to be stored in the database
           label: 'System Field',
           description: 'Whether or not the field is a system field (and '
               + 'cannot be modified'
+        },
+        type: {
+          label: 'Field Type',
+          description: 'The type of field'
         }
       }
     }
