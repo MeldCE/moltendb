@@ -6,7 +6,7 @@ if (typeof define !== 'function') {
 
 /**
  */
-define(['lib/moltendb'], function(moltendb) {
+define(['moltendb'], function(moltendb) {
   let skemer, engineSchema;
   
   // Load Skemer and the engine schema if schemaCheck logging is enabled
@@ -35,10 +35,11 @@ define(['lib/moltendb'], function(moltendb) {
      * @throws {Error} Throws an Error if something goes wrong
      */
     register: function registerStorageEngine(id, engine, overwrite) {
+      console.log('register called for ', id);
       if (moltendb.log('schemaCheck', 'Checking schema for storage engine '
           + id)) {
         skemer.validateNew({
-          schema: engineSchema
+          schema: engineSchema,
           parameterName: id
         }, engine);
       }
@@ -77,9 +78,12 @@ define(['lib/moltendb'], function(moltendb) {
      *
      * @name moltendb.storage.create
      */
-    create: function createStorageEngineInstance(id) {
+    create: function createStorageEngineInstance(id, options) {
       if (engines[id] === undefined) {
-        return Promise.reject(new Error('No storage engine
+        return Promise.reject(new Error('No storage engine'));
+      }
+
+      return engines[id].constructor(options);
     },
 
     /**
@@ -88,13 +92,13 @@ define(['lib/moltendb'], function(moltendb) {
      * @returns {Object} An Object containing information on the available
      *          storage engines
      */
-    list: function listStorageEngines(id) {
+    list: function listStorageEngines() {
       if (!engineInfoFresh) {
         engineInfo = Object.keys(engines).reduce(function(previous, current) {
           previous[current] = {
-            label: engines[current],
-            description: engines[current],
-            options: engines[current]
+            label: engines[current].label,
+            description: engines[current].description,
+            options: engines[current].options
           };
           return previous;
         }, {});
@@ -113,4 +117,5 @@ define(['lib/moltendb'], function(moltendb) {
       return engineInfo;
     }
   };
-}
+});
+

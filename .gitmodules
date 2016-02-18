@@ -1,0 +1,9 @@
+[submodule "src/lib/ext/requirejs-plugins"]
+	path = src/lib/ext/requirejs-plugins
+	url = https://github.com/millermedeiros/requirejs-plugins
+[submodule "src/lib/ext/requirejs-glob"]
+	path = src/lib/ext/requirejs-glob
+	url = https://github.com/OpenWebStack/requirejs-glob
+[submodule "src/ext/requirejs-plugins"]
+	path = src/ext/requirejs-plugins
+	url = https://github.com/millermedeiros/requirejs-plugins

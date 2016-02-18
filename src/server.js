@@ -4,7 +4,12 @@ var Promise = require('promise');
 
 RequireJS.config({
   nodeRequire: require,
-  baseUrl: 'lib/'
+  baseUrl: 'lib/',
+  paths: {
+    'json': '../ext/requirejs-plugins/src/json',
+    'text': '../ext/requirejs-plugins/lib/text'
+  },
+  glob: 'lib/'
 });
 
 // Promiseify requirejs
@@ -19,10 +24,11 @@ RequireJS.config({
   });
 }*/
 
-RequireJS(['server'], function(molten) {
-  if (molten === undefined) {
-    console.err('error');
-  }
-  console.log('yipee', arguments);
-  molten.log('yipee', 'yipee');
+RequireJS(['server'], function(moltenServer) {
+  moltenServer().then(function(moltendb) {
+    console.log('yipee', arguments);
+    moltendb.log('yipee', 'yipee');
+  }, function(err) {
+    console.error('error', err.stack);
+  });
 });

@@ -1,0 +1,55 @@
+{
+  "multilingual": true,
+  "id": "views",
+  "schema": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "id": {
+      "type": "string",
+      "oneOff": true,
+      "default": { "$proc": {
+          "proc": "moltendb.slug",
+          "parameters": [
+            { "$value": "label.value" }
+          ]
+      } },
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "textType": "long"
+    },
+    "view": {
+      "type": "array",
+      "items": {
+        "type": "view"
+      }
+    }
+  },
+  "lang": {
+    "en": {
+      "lable": "Views",
+      "description": "Table storing view definitions",
+      "schema": {
+        "id": {
+          "label": "View ID",
+          "description": "The string used to identify the view"
+        },
+        "label": {
+          "label": " Title",
+          "description": "The title of the table"
+        },
+        "description": {
+          "label": "Description",
+          "description": "Description of what the table contains"
+        },
+        "schema": {
+          "label": "View Data",
+          "description": "View details"
+        }
+      }
+    }
+  }
+}

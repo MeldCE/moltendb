@@ -1,0 +1,81 @@
+{
+  "multilingual": true,
+  "id": "tables",
+  "schema": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "id": {
+      "type": "string",
+      "oneOff": true,
+      "default": { "$proc": {
+          "proc": "moltendb.slug",
+          "parameters": [
+            { "$value": "id.value" }
+          ]
+      } },
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "textType": "long"
+    },
+    "schema": {
+      "type": "array",
+      "items": {
+        "type": "field"
+      }
+    },
+    "storage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "oneOf": [
+              "get",
+              "set"
+            ]
+          },
+          "engine": {
+            "type": "string",
+            "oneOf": { "$proc": "moltendb.storage.enginesIds" }
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "anyOf": { "$value": "schema.[].id" }
+          }
+        }
+      }
+    }
+  },
+  "lang": {
+    "en": {
+      "lable": "Tables",
+      "description": "Table storing table definitions",
+      "schema": {
+        "id": {
+          "label": "Table ID",
+          "description": "The string used to identify the table"
+        },
+        "label": {
+          "label": "Table Title",
+          "description": "The title of the table"
+        },
+        "description": {
+          "label": "Description",
+          "description": "Description of what the table contains"
+        },
+        "schema": {
+          "label": "Table Schema",
+          "description": "Schema stored in the table"
+        }
+      }
+    }
+  }
+}

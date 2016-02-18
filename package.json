@@ -26,9 +26,12 @@
   },
   "homepage": "https://github.com/MeldCE/moltendb#readme",
   "dependencies": {
+    "cp": "^0.2.0",
     "i18n-node": "^2.1.5",
     "promise": "^7.1.1",
-    "requirejs": "^2.1.22"
+    "requirejs": "^2.1.22",
+    "requirejs-plugins": "^1.0.2",
+    "skemer": "^0.8.6-r1"
   },
   "devDependencies": {
     "concat": "^1.0.0",
@@ -38,6 +41,7 @@
     "gulp-complexity": "^0.3.2",
     "gulp-concat": "^2.6.0",
     "gulp-coveralls": "^0.1.4",
+    "gulp-doctoc": "^0.1.4",
     "gulp-documentation": "^2.1.0",
     "gulp-eslint": "^1.1.1",
     "gulp-foreach": "^0.1.0",

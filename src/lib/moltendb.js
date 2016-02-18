@@ -46,7 +46,8 @@ moltendb.log = function moltenDbLog(id, data) {
 }
 
 /**
+ * The MoltenDB namespace object used to store everything MoltenDB related
  */
-define('lib/moltendb', [], function() {
+define('moltendb', [], function() {
   return moltendb;
 });
