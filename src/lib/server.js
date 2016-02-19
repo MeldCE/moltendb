@@ -65,34 +65,59 @@ define('server', ['moltendb'], function(moltendb) {
 
       // Start load of config file as a JSON database
       try {
-        let dbPromise = jsonCrud(options.configFile)
+        let dbPromise = jsonCrud(options.configFile);
         
         dbPromise.then(function(config) {
           console.log('config loaded', config);
 
           // Load tables and views databases
-          config.read('tables').then(function(tables) {
-            if (tables === undefined) {
-              tables = {
-                engine: 'json-crud',
-                path: 'data/tables/'
-              };
+          Promise.all([
+            config.read('tables').then(function(tables) {
+              if (tables === undefined) {
+                tables = {
+                  engine: 'json-crud',
+                  path: 'data/tables/'
+                };
 
-              // Check if table exists already
-              try {
-                fs.accessSync(path.resolve(process.cwd(), tables.path),
-                    fs.R_OK | fs.W_OK);
-              } catch (err) {
-                if (err.code === 'ENOENT') {
-                  // Copy template table database over
-                } else {
-                  return Promise.reject(err);
+                // Check if table exists already
+                try {
+                  fs.accessSync(path.resolve(process.cwd(), tables.path),
+                      fs.R_OK | fs.W_OK);
+                } catch (err) {
+                  if (err.code === 'ENOENT') {
+                    // Copy template table database over
+                  } else {
+                    return Promise.reject(err);
+                  }
                 }
+
+                // Write it back to the settings
+                return config.create('tables'. tables).then(function() {
+                  return Promise.resolve(tables);
+                });
+              } else {
+                return Promise.resolve(tables);
               }
-            }
-            console.log('tables data', tables);
+            }),
+            config.read('views').then(function(views) {
+              if (views === undefined) {
+                views = {
+                  engine: 'json-crud',
+                  path: 'data/views/'
+                };
+
+                // Write it back to the settings
+                return config.create('views'. views).then(function() {
+                  return Promise.resolve(views);
+                });
+              } else {
+                return Promise.resolve(views);
+              }
+            })
+          ]).then(function(dbs) {
+            console.log('system tables are', dbs);
           }, function(err) {
-            console.log('tab', err);
+            console.log('temp catch error', err.stack);
           });
         }, function jsonCrudError(err) {
           reject(err);
@@ -101,5 +126,5 @@ define('server', ['moltendb'], function(moltendb) {
         return reject(err);
       }
     });
-  }
+  };
 });

@@ -6,8 +6,8 @@ if (typeof define !== 'function') {
 
 /**
  */
-define('modules/storage', ['moltendb', 'modules/registry'],
+define('modules/types', ['moltendb', 'modules/registry'],
     function(moltendb, registry) {
-  return registry('storage', {});
+  return registry('type', {});
 });
 
