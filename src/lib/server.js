@@ -98,6 +98,15 @@ define('server', ['moltendb'], function(moltendb) {
               } else {
                 return Promise.resolve(tables);
               }
+            }).then(function(tables) {
+              // Check the engine exists
+              if (moltendb.storage.have(tables.engine)) {
+                console.log('tables', tables);
+                return moltendb.storage.create(tables.engine, tables);
+              } else {
+                return Promise.reject(new Error('Storage engine '
+                    + tables.engine + ' for tables table does not exst'));
+              }
             }),
             config.read('views').then(function(views) {
               if (views === undefined) {
@@ -113,9 +122,18 @@ define('server', ['moltendb'], function(moltendb) {
               } else {
                 return Promise.resolve(views);
               }
+            }).then(function(views) {
+              // Check the engine exists
+              if (moltendb.storage.have(views.engine)) {
+                return moltendb.storage.create(views.engine, views);
+              } else {
+                return Promise.reject(new Error('Storage engine '
+                    + views.engine + ' for views table does not exst'));
+              }
             })
           ]).then(function(dbs) {
             console.log('system tables are', dbs);
+            
           }, function(err) {
             console.log('temp catch error', err.stack);
           });

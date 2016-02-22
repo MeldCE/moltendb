@@ -88,6 +88,7 @@ define('modules/registry', ['moltendb'], function registryModule(moltendb) {
               + 'id of ' + id));
         }
 
+        console.log('create got options', options);
         return engines[id].constructor(options);
       },
 

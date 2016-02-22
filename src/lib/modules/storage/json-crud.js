@@ -6,7 +6,7 @@ if (typeof define !== 'function') {
 
 /**
  */
-define(['moltendb', 'modules/storage', 'json-crud'], function(moltendb, jsonCrud) {
+define(['moltendb', 'modules/storage', 'json-crud'], function(moltendb, storage, jsonCrud) {
   moltendb.storage.register('json-crud', {
     label: 'JSON File Storage',
     description: 'Store information in either a single JSON file or in a '
