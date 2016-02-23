@@ -5,7 +5,7 @@ if (typeof define !== 'function') {
 }
 
 let moltendb = {
-  logger: console.log,
+  logger: console.log
 };
 
 /**
@@ -25,7 +25,7 @@ moltendb.log = function moltenDbLog(id, data) {
       id = id.split('.');
     }
 
-    let debug = molten.options.debug;
+    let debug = moltendb.options.debug;
     while(debug instanceof Object) {
       if (!id.length) {
         break;
@@ -37,13 +37,13 @@ moltendb.log = function moltenDbLog(id, data) {
 
     if (debug) {
       if (data) {
-        logger(data);
+        moltendb.logger(data);
       }
       return true;
     }
   }
   return false;
-}
+};
 
 /**
  * The MoltenDB namespace object used to store everything MoltenDB related

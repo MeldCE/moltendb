@@ -38,10 +38,10 @@ define('server', ['moltendb'], function(moltendb) {
           // Try and create the default settings
           try {
             cp.sync('settings.json', options.configFile);
-          } catch(err) {
-            err.message = 'Error creating settings from defaults: '
-                + err.message;
-            return reject(err);
+          } catch(newErr) {
+            newErr.message = 'Error creating settings from defaults: '
+                + newErr.message;
+            return reject(newErr);
           }
         } else {
           return reject(err);
@@ -69,10 +69,11 @@ define('server', ['moltendb'], function(moltendb) {
         
         dbPromise.then(function(config) {
           console.log('config loaded', config);
-
+          moltendb.config = config;
+        }).then(function loadSystemTables() {
           // Load tables and views databases
           Promise.all([
-            config.read('tables').then(function(tables) {
+            moltendb.config.read('tables').then(function(tables) {
               if (tables === undefined) {
                 tables = {
                   engine: 'json-crud',
@@ -108,7 +109,7 @@ define('server', ['moltendb'], function(moltendb) {
                     + tables.engine + ' for tables table does not exst'));
               }
             }),
-            config.read('views').then(function(views) {
+            moltendb.config.read('views').then(function(views) {
               if (views === undefined) {
                 views = {
                   engine: 'json-crud',
@@ -133,11 +134,23 @@ define('server', ['moltendb'], function(moltendb) {
             })
           ]).then(function(dbs) {
             console.log('system tables are', dbs);
+            moltendb.tables = dbs[0];
+            moltendb.views = dbs[1];
             
+            // Check to see if we have settings for what to load
+            return moltendb.config.read('modules');
           }, function(err) {
             console.log('temp catch error', err.stack);
           });
-        }, function jsonCrudError(err) {
+        }).then(function loadServerModules(modules) {
+          // Load the default modules
+          if (modules === undefined) {
+
+          }
+
+          // Start loading modules
+
+        }).catch(function jsonCrudError(err) {
           reject(err);
         });
       } catch(err) {
