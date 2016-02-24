@@ -27,7 +27,9 @@ define(['moltendb', 'modules/server'], function(moltendb, server) {
         app.get(uri + 'schema/:table', getSchema);
 
         // API
-        app.get(uri);
+        app.get(uri + 'api/:table/:id', getData);
+        app.post(uri + 'api/:table', storeData);
+        app.delete(uri + 'api/:table/:id', deleteData);
       }
     });
   }
