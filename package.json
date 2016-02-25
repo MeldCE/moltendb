@@ -27,6 +27,7 @@
   "homepage": "https://github.com/MeldCE/moltendb#readme",
   "dependencies": {
     "cp": "^0.2.0",
+    "express": "^4.13.4",
     "i18n-node": "^2.1.5",
     "promise": "^7.1.1",
     "requirejs": "^2.1.22",

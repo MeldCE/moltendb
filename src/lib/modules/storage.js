@@ -7,7 +7,8 @@ if (typeof define !== 'function') {
 /**
  */
 define('modules/storage', ['moltendb', 'modules/registry'],
-    function(moltendb, registry) {
-  return registry('storage', {});
+    function setupStorageEngineRegistry(moltendb, registry) {
+   moltendb.storage = registry('storage', {});
+   return moltendb.storage;
 });
 

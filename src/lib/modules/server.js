@@ -8,6 +8,7 @@ if (typeof define !== 'function') {
  */
 define('modules/server', ['moltendb', 'modules/registry'],
     function(moltendb, registry) {
-  return registry('server', {});
+  moltendb.server = registry('server', {});
+  return moltendb.server;
 });
 

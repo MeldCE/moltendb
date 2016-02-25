@@ -18,6 +18,26 @@
           }
         }
       }
+    },
+    "app": {
+      "doc": "Express (or compatible) app to attach listeners to",
+      "type": "Object"
+    },
+    "socket": {
+      "doc": "Socket.io (or compatible) instance to attach listeners to",
+      "type": "Object"
+    },
+    "port": {
+      "doc": "The port number to listen on if no Express app is given",
+      "type": "number",
+      "min": 1,
+      "max": 65535,
+      "default": 6462
+    },
+    "address": {
+      "doc": "The host address to listen on if no Express app is given",
+      "type": "string",
+      "default": "127.0.0.1"
     }
   }
 }

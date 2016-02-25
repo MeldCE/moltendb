@@ -51,9 +51,12 @@ define('server', ['moltendb'], function(moltendb) {
       // Load the module libraries
       try {
         // Add module registers
-        moltendb.storage = require('modules/storage');
+        //XXX moltendb.storage = require('modules/storage');
+        require('modules/storage');
+        require('modules/server');
         // Load all modules synchronously
         require('modules/storage/json-crud');
+        require('modules/server/api');
         //  'glob!./modules/types/**/*.js',
         //  'glob!./modules/storage/**/*.js'
 
@@ -67,12 +70,14 @@ define('server', ['moltendb'], function(moltendb) {
       try {
         let dbPromise = jsonCrud(options.configFile);
         
-        dbPromise.then(function(config) {
+        dbPromise.then(function saveConfig(config) {
           console.log('config loaded', config);
           moltendb.config = config;
+
+          return Promise.resolve();
         }).then(function loadSystemTables() {
           // Load tables and views databases
-          Promise.all([
+          return Promise.all([
             moltendb.config.read('tables').then(function(tables) {
               if (tables === undefined) {
                 tables = {
@@ -93,7 +98,8 @@ define('server', ['moltendb'], function(moltendb) {
                 }
 
                 // Write it back to the settings
-                return config.create('tables'. tables).then(function() {
+                return moltendb.config.create('tables'. tables)
+                    .then(function() {
                   return Promise.resolve(tables);
                 });
               } else {
@@ -117,7 +123,8 @@ define('server', ['moltendb'], function(moltendb) {
                 };
 
                 // Write it back to the settings
-                return config.create('views'. views).then(function() {
+                return moltendb.config.create('views'. views)
+                    .then(function() {
                   return Promise.resolve(views);
                 });
               } else {
@@ -132,25 +139,64 @@ define('server', ['moltendb'], function(moltendb) {
                     + views.engine + ' for views table does not exst'));
               }
             })
-          ]).then(function(dbs) {
+          ]).then(function saveTablesAndLoadModuleConfig(dbs) {
             console.log('system tables are', dbs);
             moltendb.tables = dbs[0];
             moltendb.views = dbs[1];
             
             // Check to see if we have settings for what to load
             return moltendb.config.read('modules');
-          }, function(err) {
-            console.log('temp catch error', err.stack);
           });
         }).then(function loadServerModules(modules) {
+          let ownApp = false;
+          // Load application if we don't have one already
+          if (!options.app) {
+            // Start our own app
+            options.app = require('express')();
+            ownApp = true;
+          }
+
+          moltendb.app = options.app;
+
+          // Create out own socket
+
           // Load the default modules
           if (modules === undefined) {
-
+            modules = {
+              api: true
+            };
+            moltendb.config.create('modules', modules);
           }
 
           // Start loading modules
+          let m, servers = [];
+          for (m in modules) {
+            if (modules[m] && moltendb.server.have(m)) {
+              servers.push(moltendb.server.create(m));
+            }
+          }
 
-        }).catch(function jsonCrudError(err) {
+          console.log(servers, 'ownApp is', ownApp);
+          return Promise.all(servers).then(function() {
+            console.log('servers ready');
+            return Promise.resolve(ownApp);
+          });
+        }).then(function startOwnAppListening(ownApp) {
+          console.log('ownApp is', ownApp);
+          // Set app to listen if it is our own
+          if (ownApp) {
+            try {
+              moltendb.app.listen(options.port, options.address);
+              console.log('MoltenDB listening on ' + options.address + ':'
+                  + options.port);
+            } catch(err) {
+              return Promise.reject(err);
+            }
+          }
+
+          return Promise.resolve();
+        }).catch(function moltendbError(err) {
+          console.log('got an error');
           reject(err);
         });
       } catch(err) {
