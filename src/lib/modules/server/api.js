@@ -21,11 +21,18 @@ define(['moltendb', 'modules/server'], function(moltendb, server) {
     console.log('HELLO');
     // Get the table schema
     moltendb.tables.read(req.params.table).then(function returnSchema(schema) {
+      try {
       if (schema === undefined) {
         res.sendStatus(404);
       } else {
-        res.send(JSON.stringify(schema));
+        res.json(schema);
       }
+      } catch(err) {
+        res.status(500).send(err.stack);
+      }
+      next();
+    }, function(err) {
+      res.status(500).send(err.stack);
       next();
     });
   }
