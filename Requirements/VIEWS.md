@@ -2,30 +2,30 @@
 - Content of view should be stored as text (HTML/fux HTML)
   ```html
     <header>
-      <navigation>{navigation}</navigation>
+      <navigation>{{navigation}}</navigation>
       <h1> MoltenDB</h1>
     </header>
     <main>
-      {main}
+      {{main}}
     </main>
   ```
 - Should be able to specify data to use in the view and then reference that
   data in the view
   ```html
-    {with somedata as data}
-      {foreach data as item}
-        <label>{item.label}: {item.value}</label>
-      {/foreach}
-    {/with}
+    {{#with somedata as data}}
+      {{#foreach data as item}}
+        <label>{{item.label}}: {{item.value}}</label>
+      {{/foreach}}
+    {{/with}}
   ```
 - Should be able to reuse views inside of one another
   `view1` view
   ```html
     <main>
-     {main}
+     {{main}}
     </main>
     <footer>
-      {footer}
+      {{footer}}
     </footer>
   ```
   `footer` view
@@ -49,19 +49,19 @@
       view:
         main: `
         <header>
-          <navigation>{navigation}</navigation>
+          <navigation>{{navigation}}</navigation>
           <h1> MoltenDB</h1>
         </header>
         <main>
-          {main}
+          {{main}}
         </main>
         <footer>
-          {footer}
+          {{footer}}
         </footer>
       `,
       footer: `
         <div class="generator">Powered by MoltenDB</div>
-        <div class="status">{molten/status()}</div>
+        <div class="status">{{molten/status()}}</div>
       `
     }
   ```
@@ -79,12 +79,15 @@
         `,
         footer: `
           <p>Footer information</p>
-          {../footer}
+          {{../footer}}
         `
+      }
+    }
+  ```
 - Should be able to store in hierarchy, so can limit view to a certain section
   etc
 - Should be able to call routines in the views
   ```html
-    <div class="status">{molten/status()}</div>
+    <div class="status">{{molten/status()}}</div>
   ```
 - Should be able to link a view to a URI, or array of URIs
