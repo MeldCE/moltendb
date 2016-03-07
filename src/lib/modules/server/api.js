@@ -1,6 +1,7 @@
 'use strict';
 
 let Promise = require('promise');
+let path = require('path');
 
 if (typeof define !== 'function') {
   var define = require('amdefine')(module);
@@ -78,24 +79,25 @@ define(['moltendb', 'modules/server'], function(moltendb, server) {
    */
   function API(options) {
     return new Promise(function (resolve, reject) {
-      // Check for pre
-      let uri = '/';
-      if (options && options.uri) {
-      }
-
       // Schema requests
-      console.log('api', 'Adding listener for GET:' + uri + 'schema/:table');
-      moltendb.app.get(uri + 'schema/:table', getSchema);
+      console.log('api', 'Adding listener for GET:'
+          + path.join(moltendb.options.uri, options.schemaPath, ':table'));
+      moltendb.app.get(path.join(moltendb.options.uri, options.schemaPath,
+          ':table'), getSchema);
 
       // API
-      console.log('api', 'Adding listener for GET:' + uri
-          + 'api/:table/:id');
-      moltendb.app.get(uri + 'api/:table/:id', getData);
-      console.log('api', 'Adding listener for POST:' + uri + 'api/:table');
-      moltendb.app.post(uri + 'api/:table', storeData);
-      console.log('api', 'Adding listener for DELETE:' + uri
-          + 'api/:table/:id');
-      moltendb.app.delete(uri + 'api/:table/:id', deleteData);
+      console.log('api', 'Adding listener for GET:'
+          + path.join(moltendb.options.uri, options.apiPath, ':table/:id'));
+      moltendb.app.get(path.join(moltendb.options.uri, options.apiPath,
+          ':table/:id'), getData);
+      console.log('api', 'Adding listener for POST:'
+          + path.join(moltendb.options.uri, options.apiPath, ':table'));
+      moltendb.app.post(path.join(moltendb.options.uri, options.apiPath,
+          ':table'), storeData);
+      console.log('api', 'Adding listener for DELETE:'
+          + path.join(moltendb.options.uri, options.apiPath, ':table/:id'));
+      moltendb.app.delete(path.join(moltendb.options.uri, options.apiPath,
+          ':table/:id'), deleteData);
 
       resolve();
     });
@@ -103,9 +105,20 @@ define(['moltendb', 'modules/server'], function(moltendb, server) {
 
   moltendb.server.register('api', {
     label: 'API Server Module',
-    description: 'Adds the ability to interacte with MoltenDB throught a CRUD '
+    description: 'Adds the ability to interacte with MoltenDB through a CRUD '
         + 'API',
-    paths: ['api','schema'],
+    options: {
+      type: {
+        apiPath: {
+          type: 'string',
+          default: 'api'
+        },
+        schemaPath: {
+          type: 'string',
+          default: 'schema'
+        }
+      }
+    },
     constructor: API
   });
 });

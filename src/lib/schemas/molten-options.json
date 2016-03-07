@@ -38,6 +38,11 @@
       "doc": "The host address to listen on if no Express app is given",
       "type": "string",
       "default": "127.0.0.1"
+    },
+    "uri": {
+      "doc": "Base URI for MoltenDB application",
+      "type": "string",
+      "default": "/"
     }
   }
 }

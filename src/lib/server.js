@@ -25,6 +25,9 @@ define('server', ['moltendb'], function(moltendb) {
           schema: moltenOptions,
           parameterName: 'options'
         }, options || {});
+        // Make the URI absolute
+        options.uri = path.join('/', options.uri);
+        moltendb.options = options;
       } catch (err) {
         return reject(err);
       }
